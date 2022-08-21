@@ -14,10 +14,16 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
-import TabOneScreen from '../screens/TabOneScreen';
-import TabTwoScreen from '../screens/TabTwoScreen';
+
+import TasksScreen from '../screens/tasksScreen/TasksScreen'
+import HomeScreen from '../screens/homeScreen/HomeScreen'
+import ReportScreen from '../screens/reportScreen/ReportScreen'
+import ProfileScreen from '../screens/profileScreen/ProfileScreen';
+
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
+import {TabButton } from '../components/Tabs'
+
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -58,40 +64,58 @@ function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName="Home"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
       }}>
+     
       <BottomTab.Screen
-        name="TabOne"
-        component={TabOneScreen}
-        options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
-          title: 'Tab One',
+        name="Report"
+        component={ReportScreen}
+        options={{
+          title: 'Báo cáo',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerRight: () => (
-            <Pressable
-              onPress={() => navigation.navigate('Modal')}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}>
-              <FontAwesome
-                name="info-circle"
-                size={25}
-                color={Colors[colorScheme].text}
-                style={{ marginRight: 15 }}
-              />
-            </Pressable>
-          ),
-        })}
+          tabBarButton: (props) => <TabButton {...props} item={{label: 'Báo cáo',icon:'bar-chart-o'}} />
+        }}
       />
       <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoScreen}
+        name="Tasks"
+        component={TasksScreen}
         options={{
           title: 'Tab Two',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarButton: (props) => <TabButton {...props} item={{label: 'Công việc',icon:'tasks'}} />
         }}
       />
+       <BottomTab.Screen
+        name="Home"
+        component={HomeScreen}
+         
+        options={({ navigation }: RootTabScreenProps<'Home'>) => ({
+          headerShown:false,
+          tabBarButton: (props) => <TabButton {...props} item={{label: 'Home',  icon: 'home',}} />,
+        
+
+        })}
+      />
+      <BottomTab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          title: 'Tab Two',
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarButton: (props) => <TabButton {...props} item={{label: 'Cá nhân',icon:'user'}} />
+        }}
+      />
+        <BottomTab.Screen
+        name="None"
+        component={ProfileScreen}
+        options={{
+          title: 'Tab Two',
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarButton: (props) => <TabButton {...props} item={{label: 'Cá nhân',icon:'user'}} />
+        }}
+      /> 
     </BottomTab.Navigator>
   );
 }
